@@ -44,9 +44,13 @@ export const MessageProvider = ({
     async (message: MessageType) => {
       setMessagesBase((prev) => [...prev, message]);
       setLoading(true);
-      const response = await sendMessage([...messages, message]);
-      setMessagesBase((prev) => [...prev, response?.choices[0]?.message]);
-      setLoading(false);
+      try {
+        const response = await sendMessage([...messages, message]);
+        setMessagesBase((prev) => [...prev, response?.choices[0]?.message]);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
     },
     [messages, setLoading]
   );
